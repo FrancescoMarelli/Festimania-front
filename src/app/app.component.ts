@@ -4,6 +4,7 @@ import {Festival} from "./festival";
 import {FestivalService} from "./festival.service";
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
+import {CardModule} from "primeng/card";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ import {HttpClientModule} from "@angular/common/http";
   imports: [
     CommonModule,     // Required for structural directives like *ngFor
     HttpClientModule,
-    RouterOutlet
+    RouterOutlet,
+    CardModule
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
