@@ -1,22 +1,25 @@
-<div class="festival-list-container">
-  <h1 class="title">Proximos Festivales</h1>
-  <div *ngIf="festivals.length > 0; else noFestivals">
-    <div class="festival-card" *ngFor="let festival of festivals">
-      <div class="festival-header">
-        <h2>{{festival.nombre}}</h2>
-        <span>{{festival.fecha | date: 'longDate'}}</span>
-      </div>
+<div class="p-grid">
+  <div class="p-col-6 p-md-4" *ngFor="let festival of festivals">
+    <p-card [style]="{ width: '360px' }">
+      <ng-template pTemplate="header">
+        <h2>{{ festival.nombre }}</h2>
+      </ng-template>
       <div class="festival-details">
-        <p><strong>Location:</strong> {{festival.lugar}}</p>
-        <p><strong>Artists:</strong></p>
+        <div class="detail">
+          <h3 class="element-title">Fecha:</h3>
+          <div class="extra-details">{{ festival.fecha }}</div>
+        </div>
+        <div class="detail">
+          <h3 class="element-title">Ubicación:</h3>
+          <div class="extra-details">{{ festival.lugar }}</div>
+        </div>
+      </div>
+      <h3 class="artist-title center-title">Artistas:</h3>
+      <div class="p-artistas">
         <ul>
-          <li *ngFor="let artista of festival.artistas">
-            {{artista.nombre}}  <!-- Aquí mostramos el nombre de cada artista -->
-          </li>
-        </ul>      </div>
-    </div>
+          <li *ngFor="let artista of festival.artistas">{{ artista.nombre }}</li>
+        </ul>
+      </div>
+    </p-card>
   </div>
-  <ng-template #noFestivals>
-    <p class="no-festivals">No hay festivales.</p>
-  </ng-template>
 </div>
