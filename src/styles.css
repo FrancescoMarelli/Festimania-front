@@ -1,1 +1,81 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.festival-list-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 40px;
+  color: #4c5baf;
+}
+
+.festival-card {
+  background-color: #f9f9f9;
+  border-left: 5px solid #4c5baf;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.festival-card:hover {
+  transform: translateY(-5px);
+}
+
+.festival-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.festival-header h2 {
+  font-size: 1.8em;
+  margin: 0;
+}
+
+.festival-header span {
+  font-size: 1.2em;
+  color: #999;
+}
+
+.festival-details p {
+  margin: 5px 0;
+}
+
+.no-festivals {
+  text-align: center;
+  font-size: 1.5em;
+  color: #999;
+}
+
+.artists-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.artists-list li {
+  background-color: #e0f7fa;
+  padding: 5px 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 1.1em;
+  color: #00796b;
+}
