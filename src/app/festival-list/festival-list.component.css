@@ -1,0 +1,20 @@
+.expanded {
+  position: fixed ; /* Mantén la posición relativa al contenedor */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  zoom: 150%;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para la opacidad de las cards no seleccionadas */
+.dimmed {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+/* Estilo normal de la card */
+.festival-list .p-col-6 {
+  transition: all 0.3s ease;
+}

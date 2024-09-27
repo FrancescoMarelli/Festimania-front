@@ -1,0 +1,24 @@
+<p-card *ngIf="festival" [style]="{ width: '100%' }">
+  <ng-template pTemplate="header">
+    <h2>{{ festival.nombre }}</h2>
+  </ng-template>
+  <div class="festival-details">
+    <div class="detail">
+      <h3 class="element-title">Fecha:</h3>
+      <div class="extra-details">{{ festival.fecha }}</div>
+    </div>
+    <div class="detail">
+      <h3 class="element-title">Ubicación:</h3>
+      <div class="extra-details">{{ festival.lugar }}</div>
+    </div>
+  </div>
+  <h3 class="artist-title">Artistas:</h3>
+  <div class="p-artistas">
+    <ul>
+      <li *ngFor="let artista of festival.artistas">{{ artista.nombre }}</li>
+    </ul>
+  </div>
+  <footer>
+    <p-button label="Volver" icon="pi pi-arrow-left" (click)="goBack()"></p-button>
+  </footer>
+</p-card>

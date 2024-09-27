@@ -1,6 +1,11 @@
 @import "primeng/resources/themes/bootstrap4-dark-blue/theme.css";
 @import "primeng/resources/primeng.css";
 
+.p-menubar {
+  background-color: #1F2674B2;
+  font-size: 1.5rem;
+}
+
 .p-grid {
   display: flex;
   flex-wrap: wrap; /* Asegúrate de que las columnas se envuelvan */
@@ -71,4 +76,8 @@
 
 .p-card ul li {
   margin: 0.4rem; /* Espacio entre los nombres */
+}
+
+footer {
+  text-align: center;
 }

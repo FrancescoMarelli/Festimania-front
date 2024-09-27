@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Router, RouterModule, RouterOutlet} from '@angular/router';
 import {Festival} from "./festival";
 import {FestivalService} from "./festival.service";
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
 import {CardModule} from "primeng/card";
+import {Button} from "primeng/button";
+import {MenubarModule} from "primeng/menubar";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-root',
@@ -13,32 +16,32 @@ import {CardModule} from "primeng/card";
     CommonModule,     // Required for structural directives like *ngFor
     HttpClientModule,
     RouterOutlet,
-    CardModule
+    CardModule,
+    Button,
+    MenubarModule,
+    RouterModule,
+    FormsModule
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
   public festivals: Festival[] = [];
+  items: any[] = [];
 
-  constructor(private festivalService: FestivalService) { }
+  constructor(private festivalService: FestivalService, private router: Router) { }
 
   ngOnInit() {
     this.getFestivals();
   }
 
   public getFestivals(): void {
-    this.festivalService.getFestivals().subscribe({
-      next: (response: Festival[]) => {
-        this.festivals = response;
-      },
-      error: (error: any) => {
-        console.error(error);
-      },
-      complete: () => {
-        console.log('Festival data successfully fetched');
-      }
-    });
+    this.router.navigate(['/festival-list']);
+  }
+
+  showDetails(festival: Festival) {
+    console.log('Navigating to festival with id: ' + festival.id);
+    this.router.navigate(['/festival', festival.id]);
   }
 
 }
