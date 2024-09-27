@@ -1,0 +1,44 @@
+<div class="p-grid festival-list">
+  <div
+    class="p-col-6 p-md-4"
+    *ngFor="let festival of festivals"
+    [class.expanded]="selectedFestival === festival"
+    [class.dimmed]="selectedFestival && selectedFestival !== festival"
+  >
+    <p-card [style]="{ width: '360px' }" [class.expanded-card]="selectedFestival === festival">
+      <ng-template pTemplate="header">
+        <h2>{{ festival.nombre }}</h2>
+      </ng-template>
+      <div class="festival-details">
+        <div class="detail">
+          <h3 class="element-title">Fecha:</h3>
+          <div class="extra-details">{{ festival.fecha }}</div>
+        </div>
+        <div class="detail">
+          <h3 class="element-title">Ubicación:</h3>
+          <div class="extra-details">{{ festival.lugar }}</div>
+        </div>
+      </div>
+      <h3 class="artist-title center-title">Artistas:</h3>
+      <div class="p-artistas">
+        <ul>
+          <li *ngFor="let artista of festival.artistas">{{ artista.nombre }}</li>
+        </ul>
+      </div>
+      <footer>
+        <p-button
+          *ngIf="selectedFestival !== festival"
+          label="Ver más"
+          icon="pi pi-arrow-right"
+          (click)="selectFestival(festival)"
+        ></p-button>
+        <p-button
+          *ngIf="selectedFestival === festival"
+          label="Volver"
+          icon="pi pi-arrow-left"
+          (click)="goBack()"
+        ></p-button>
+      </footer>
+    </p-card>
+  </div>
+</div>

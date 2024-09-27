@@ -16,6 +16,10 @@ export class FestivalService {
     return this.http.get<Festival[]>(`${this.apiServerUrl}`);
   }
 
+  public getFestivalById(festivalId: string): Observable<Festival> {
+    return this.http.get<Festival>(`${this.apiServerUrl}/${festivalId}`);
+  }
+
   public addFestival(festival: Festival): Observable<Festival> {
     return this.http.post<Festival>(`${this.apiServerUrl}`, festival);
   }
