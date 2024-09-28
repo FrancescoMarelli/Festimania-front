@@ -7,6 +7,7 @@ import {Festival} from "../festival";
 import {FestivalService} from "../festival.service";
 import {FormsModule} from "@angular/forms";
 import {MenubarModule} from "primeng/menubar";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-festival-list',
@@ -30,7 +31,7 @@ export class FestivalListComponent implements OnInit {
   public newFestival: Festival = { id: '', nombre: '', lugar: '', fecha: '', artistas: [] };
 
 
-  constructor(private festivalService: FestivalService) { }
+  constructor(private festivalService: FestivalService,  private router: Router) { }
 
   ngOnInit() {
     this.getFestivals();
@@ -83,5 +84,17 @@ export class FestivalListComponent implements OnInit {
     });
     }
 
+  addArtist() {
+    this.newFestival.artistas.push({albums: [], canciones: [], genero: "", pais: "", id: '', nombre: '' });
+  }
 
+  removeArtist(index: number) {
+    this.newFestival.artistas.splice(index, 1);
+  }
+
+
+  logout() {
+    localStorage.removeItem('authToken');
+    this.router.navigate(['/login']);
+  }
 }

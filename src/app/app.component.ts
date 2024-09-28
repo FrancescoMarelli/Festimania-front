@@ -28,9 +28,7 @@ import {FormsModule} from "@angular/forms";
 export class AppComponent implements OnInit{
   public festivals: Festival[] = [];
 
-  constructor(private festivalService: FestivalService, private router: Router) {
-    window.addEventListener('beforeunload', this.clearAuthToken);
-  }
+  constructor(private festivalService: FestivalService, private router: Router) {}
 
   ngOnInit() {
     this.getFestivals();
@@ -46,13 +44,5 @@ export class AppComponent implements OnInit{
     this.router.navigate(['/festival-list']);
   }
 
-  showDetails(festival: Festival) {
-    console.log('Navigating to festival with id: ' + festival.id);
-    this.router.navigate(['/festival', festival.id]);
-  }
-
-  clearAuthToken() {
-    localStorage.removeItem('authToken');
-  }
 
 }
