@@ -1,4 +1,12 @@
-<div class="p-grid festival-list">
+<!-- Navbar para agregar festival -->
+<p-menubar>
+  <div class="p-menubar-start">
+    <p-button label="Agregar Festival" icon="pi pi-plus" (click)="showForm()"></p-button>
+  </div>
+</p-menubar>
+
+<!-- Lista de festivales, difuminada si el formulario está visible -->
+<div class="p-grid festival-list" [class.dimmed-background]="isFormVisible">
   <div
     class="p-col-6 p-md-4"
     *ngFor="let festival of festivals"
@@ -42,3 +50,36 @@
     </p-card>
   </div>
 </div>
+
+<!-- Formulario para agregar un festival, centrado en la pantalla -->
+<div *ngIf="isFormVisible" class="form-overlay">
+  <p-card>
+    <form (ngSubmit)="onSubmit()" class="festival-form">
+      <ng-template pTemplate="header">
+        <h2>Crear Nuevo Festival</h2>
+      </ng-template>
+      <div class="p-field">
+        <label for="id">id:</label>
+        <input id="id" type="text" pInputText [(ngModel)]="newFestival.id" name="id" required />
+      </div>
+      <div class="p-field">
+        <label for="nombre">Nombre:</label>
+        <input id="nombre" type="text" pInputText [(ngModel)]="newFestival.nombre" name="nombre" required />
+      </div>
+      <div class="p-field">
+        <label for="fecha">Fecha:</label>
+        <input id="fecha" type="date" pInputText [(ngModel)]="newFestival.fecha" name="fecha" required />
+      </div>
+      <div class="p-field">
+        <label for="lugar">Ubicación:</label>
+        <input id="lugar" type="text" pInputText [(ngModel)]="newFestival.lugar" name="lugar" required />
+      </div>
+
+      <div class="p-d-flex p-jc-between">
+        <button pButton type="submit" label="Crear Festival">Crear festival</button>
+        <button pButton type="button" label="Cerrar" icon="pi pi-times" (click)="cancelForm()">Volver</button>
+      </div>
+    </form>
+  </p-card>
+</div>
+

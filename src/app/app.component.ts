@@ -27,12 +27,19 @@ import {FormsModule} from "@angular/forms";
 })
 export class AppComponent implements OnInit{
   public festivals: Festival[] = [];
-  items: any[] = [];
 
-  constructor(private festivalService: FestivalService, private router: Router) { }
+  constructor(private festivalService: FestivalService, private router: Router) {
+    window.addEventListener('beforeunload', this.clearAuthToken);
+  }
 
   ngOnInit() {
     this.getFestivals();
+    const isAuthenticated = !!localStorage.getItem('authToken');
+    if (isAuthenticated) {
+      this.getFestivals();
+    } else {
+      this.router.navigate(['/login']); // Navigate to login if not authenticated
+    }
   }
 
   public getFestivals(): void {
@@ -42,6 +49,10 @@ export class AppComponent implements OnInit{
   showDetails(festival: Festival) {
     console.log('Navigating to festival with id: ' + festival.id);
     this.router.navigate(['/festival', festival.id]);
+  }
+
+  clearAuthToken() {
+    localStorage.removeItem('authToken');
   }
 
 }
