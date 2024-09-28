@@ -87,14 +87,15 @@
           <input type="text" class="input-styled" pInputText [(ngModel)]="newFestival.artistas[i].nombre" placeholder="Nombre del artista" name="artistNombre-{{i}}" required />
         </div>
         <div class="p-d-flex p-jc-center">
-          <p-button class="p-button-form add-artist-button" type="submit" label="Añadir Artista" icon="pi pi-plus" (click)="addArtist()"></p-button>
+          <p-button class="p-button-form add-artist-button" type="button" label="Añadir Artista" icon="pi pi-plus" (click)="addArtist()"></p-button>
         </div>
       </div>
 
       <div class="p-d-flex button-row">
         <p-button class="p-button-form" type="submit" label="Crear Festival"></p-button>
-        <p-button class="p-button-form p-cancelar" type="submit" label="Volver atrás  " icon="pi pi-times" (click)="cancelForm()"></p-button>
+        <p-button class="p-button-form p-cancelar" type="button" label="Volver atrás" icon="pi pi-times" (click)="cancelForm()"></p-button>
       </div>
+
 
     </form>
   </p-card>

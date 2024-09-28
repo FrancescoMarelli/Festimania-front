@@ -26,8 +26,7 @@ export class FestivalService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Agrega el token al header
     return this.http.post<Festival>(`${this.apiServerUrl}`, festival, { headers });
   }
-
-
+  
 
   public updateFestival(festival: Festival): Observable<Festival> {
     return this.http.put<Festival>(`${this.apiServerUrl}/${festival.id}`, festival);

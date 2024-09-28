@@ -8,6 +8,8 @@ import {FestivalService} from "../festival.service";
 import {FormsModule} from "@angular/forms";
 import {MenubarModule} from "primeng/menubar";
 import {Router} from "@angular/router";
+import {ArtistService} from "../artist.service";
+import {Artista} from "../artista";
 
 @Component({
   selector: 'app-festival-list',
@@ -28,10 +30,18 @@ export class FestivalListComponent implements OnInit {
   public festivals: Festival[] = [];
   public selectedFestival: Festival | null = null;
   public isFormVisible: boolean = false;
-  public newFestival: Festival = { id: '', nombre: '', lugar: '', fecha: '', artistas: [] };
+  public newFestival: Festival = { id: '', nombre: '', lugar: '', fecha: '', artistas: [    {
+      id: '',
+      nombre: '',
+      albums: [],
+      canciones: [],
+      genero: '',
+      pais: ''
+    }
+    ] };
 
 
-  constructor(private festivalService: FestivalService,  private router: Router) { }
+  constructor(private festivalService: FestivalService, private artistService: ArtistService, private router: Router) { }
 
   ngOnInit() {
     this.getFestivals();
@@ -85,8 +95,46 @@ export class FestivalListComponent implements OnInit {
     }
 
   addArtist() {
-    this.newFestival.artistas.push({albums: [], canciones: [], genero: "", pais: "", id: '', nombre: '' });
+    // Obtener el último artista de la lista
+    const lastArtistIndex = this.newFestival.artistas.length - 1;
+
+    // Asegurarse de que el ID y el nombre del último artista no estén vacíos
+    const artistId = this.newFestival.artistas[lastArtistIndex].id;
+    const artistNombre = this.newFestival.artistas[lastArtistIndex].nombre;
+
+    if (!artistId || !artistNombre) {
+      console.warn('Por favor, completa el ID y el Nombre del artista antes de agregar uno nuevo.');
+      return;
+    }
+
+    // Añadir un nuevo artista vacío a la lista
+    this.newFestival.artistas.push({
+      id: '', // Inicialmente vacío, se llenará con el ID del input
+      nombre: '',
+      albums: [],
+      canciones: [],
+      genero: '',
+      pais: ''
+    });
+
+    // Enviar el artista al backend
+    this.artistService.addArtistToFestival(this.newFestival.id, {
+      id: artistId,
+      nombre: artistNombre,
+      albums: [],
+      canciones: [],
+      genero: '',
+      pais: ''
+    }).subscribe({
+      next: (response: any) => {
+        console.log('Artista agregado correctamente al festival');
+      },
+      error: (error: any) => {
+        console.error('Error al agregar artista:', error);
+      }
+    });
   }
+
 
   removeArtist(index: number) {
     this.newFestival.artistas.splice(index, 1);
