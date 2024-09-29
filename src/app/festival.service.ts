@@ -1,7 +1,7 @@
 import {Festival} from "./festival";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ import {HttpClient} from "@angular/common/http";
 
 export class FestivalService {
   private apiServerUrl = 'http://localhost:8080/festimania/api/v1/festival';
+  private authToken: string | undefined;
 
   constructor(private http: HttpClient) { }
 
@@ -21,16 +22,26 @@ export class FestivalService {
   }
 
   public addFestival(festival: Festival): Observable<Festival> {
-    return this.http.post<Festival>(`${this.apiServerUrl}`, festival);
+    const token = localStorage.getItem('authToken'); // Recupera el token del localStorage
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Agrega el token al header
+    return this.http.post<Festival>(`${this.apiServerUrl}`, festival, { headers });
   }
+
 
   public updateFestival(festival: Festival): Observable<Festival> {
-    return this.http.put<Festival>(`${this.apiServerUrl}/${festival.id}`, festival);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<Festival>(`${this.apiServerUrl}/${festival.id}`, festival, { headers });
   }
 
+
   public deleteFestival(festivalId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiServerUrl}/${festivalId}`);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<void>(`${this.apiServerUrl}/${festivalId}`, { headers });
   }
+
 }
+
 
 
