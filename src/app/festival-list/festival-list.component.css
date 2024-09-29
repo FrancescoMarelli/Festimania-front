@@ -1,0 +1,127 @@
+.expanded {
+  position: fixed ; /* Mantén la posición relativa al contenedor */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  zoom: 150%;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para la opacidad de las cards no seleccionadas */
+.dimmed {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+/* Fondo difuminado cuando el formulario está abierto */
+.dimmed-background {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Para las cards cuando el formulario está visible */
+.festival-list {
+  transition: opacity 0.3s ease;
+}
+.form-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px; /* Más espacio alrededor del formulario */
+  border-radius: 10px;
+  width: 600px; /* Ajuste del ancho */
+  z-index: 1001;
+}
+
+.festival-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Alineación al centro */
+}
+
+.p-field {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-title {
+  text-align: center;
+  font-size: 2rem; /* Título más grande */
+  margin-bottom: 20px;
+}
+
+.input-styled {
+  width: 100%;
+  font-size: 1.2rem; /* Tamaño del input más grande */
+  padding: 10px; /* Espaciado interior para inputs */
+  margin-top: 10px;
+}
+
+.form-style .p-button-form {
+  margin-right: 10px;
+  width: 48%;
+}
+
+.margin-box {
+  margin-left: 10px;
+}
+
+.p-menubar-start .p-button-menu {
+  margin-right: 10px;
+}
+
+.add-artist-button {
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* Alineación y distribución de los botones */
+.p-d-flex.p-jc-between {
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+}
+
+.artist-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.p-d-flex.p-jc-center {
+  justify-content: center;
+  margin-top: 10px;
+
+}
+
+/* Botones "Crear Festival" y "Cerrar" en dos columnas centradas */
+.button-row {
+  display: flex;
+  justify-content: space-around; /* Distribuye los botones en columnas */
+  width: 100%;
+  margin-top: 20px;
+}
+
+.p-button-form {
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  width: 50%;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.p-button-form {
+  margin-right: 10px; /* Ajusta el margen derecho de los botones de la fila */
+}
+
+
+

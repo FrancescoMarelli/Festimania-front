@@ -1,1 +1,85 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/bootstrap4-dark-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+.p-menubar {
+  background-color: #1F2674B2;
+  font-size: 1.5rem;
+}
+
+.p-grid {
+  display: flex;
+  flex-wrap: wrap; /* Asegúrate de que las columnas se envuelvan */
+  justify-content: center; /* Centra las tarjetas horizontalmente */
+}
+
+.p-card {
+  margin: 1rem; /* Espaciado entre las tarjetas */
+  padding: 0;
+  min-height: 200px;
+  width: 100%; /* Asegúrate de que las tarjetas ocupen el ancho completo de su columna */
+  max-width: 360px; /* Limita el ancho para que todas las tarjetas sean uniformes */
+}
+
+.p-card h2 {
+  font-size: 2rem; /* Aumenta el tamaño de la fuente del título */
+  margin-bottom: 0.5rem;
+  text-align: center; /* Centra el texto */
+  background-color: rgba(31, 38, 116, 0.7); /* Color opaco con transparencia */
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.festival-details {
+  display: flex;
+  justify-content: space-between; /* Espacia las columnas de fecha y ubicación */
+  margin: 1rem 0; /* Espacio arriba y abajo de la sección de detalles */
+}
+
+.detail {
+  text-align: center; /* Centra el texto dentro de cada detalle */
+  flex: 1; /* Permite que cada detalle ocupe el mismo espacio */
+}
+
+.extra-details {
+  margin-top: 1rem; /* Espacio arriba de la sección de detalles adicionales */
+  margin-bottom: 3rem;
+  font-size: 1.5rem; /* Tamaño de fuente para los detalles adicionales */
+}
+
+
+.element-title {
+  font-size: 2rem; /* Tamaño de fuente para los títulos */
+  margin: 0; /* Elimina margen superior e inferior */
+}
+
+.artist-title {
+  font-size: 2rem; /* Tamaño de fuente para los títulos */
+  text-align: center;
+}
+
+.p-artistas {
+  text-align: center; /* Centra los nombres de los artistas */
+}
+
+.p-artistas ul {
+  display: flex; /* Utiliza flexbox para alinear los artistas en una línea */
+  flex-wrap: wrap; /* Permite que los nombres se ajusten a la línea siguiente si es necesario */
+  justify-content: center; /* Centra los nombres en el contenedor */
+  padding: 0;
+  font-size: 1.5rem;
+}
+
+.p-card ul {
+  list-style-type: none;
+  padding: 0; /* Sin padding para la lista */
+}
+
+.p-card ul li {
+  margin: 0.4rem; /* Espacio entre los nombres */
+}
+
+footer {
+  text-align: center;
+}
+
+

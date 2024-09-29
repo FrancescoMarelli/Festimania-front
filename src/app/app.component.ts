@@ -1,9 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Router, RouterModule, RouterOutlet} from '@angular/router';
 import {Festival} from "./festival";
 import {FestivalService} from "./festival.service";
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
+import {CardModule} from "primeng/card";
+import {Button} from "primeng/button";
+import {MenubarModule} from "primeng/menubar";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +15,12 @@ import {HttpClientModule} from "@angular/common/http";
   imports: [
     CommonModule,     // Required for structural directives like *ngFor
     HttpClientModule,
-    RouterOutlet
+    RouterOutlet,
+    CardModule,
+    Button,
+    MenubarModule,
+    RouterModule,
+    FormsModule
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
@@ -19,24 +28,21 @@ import {HttpClientModule} from "@angular/common/http";
 export class AppComponent implements OnInit{
   public festivals: Festival[] = [];
 
-  constructor(private festivalService: FestivalService) { }
+  constructor(private festivalService: FestivalService, private router: Router) {}
 
   ngOnInit() {
     this.getFestivals();
+    const isAuthenticated = !!localStorage.getItem('authToken');
+    if (isAuthenticated) {
+      this.getFestivals();
+    } else {
+      this.router.navigate(['/login']); // Navigate to login if not authenticated
+    }
   }
 
   public getFestivals(): void {
-    this.festivalService.getFestivals().subscribe({
-      next: (response: Festival[]) => {
-        this.festivals = response;
-      },
-      error: (error: any) => {
-        console.error(error);
-      },
-      complete: () => {
-        console.log('Festival data successfully fetched');
-      }
-    });
+    this.router.navigate(['/festival-list']);
   }
+
 
 }

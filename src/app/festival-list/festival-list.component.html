@@ -1,0 +1,122 @@
+<!-- Navbar para agregar festival -->
+<p-menubar>
+  <div class="p-menubar-start">
+    <p-button class="p-button-menu" label="Agregar Festival" icon="pi pi-plus" (click)="showForm()"></p-button>
+    <p-button class="p-button-menu" label="Cerrar sesión" icon="pi pi-sign-out" (click)="logout()"></p-button>
+  </div>
+</p-menubar>
+
+<!-- Lista de festivales, difuminada si el formulario está visible -->
+<div class="p-grid festival-list" [class.dimmed-background]="isFormVisible">
+  <div
+    class="p-col-6 p-md-4"
+    *ngFor="let festival of festivals"
+    [class.expanded]="selectedFestival === festival"
+    [class.dimmed]="selectedFestival && selectedFestival !== festival"
+  >
+    <p-card [style]="{ width: '360px' }" [class.expanded-card]="selectedFestival === festival">
+      <ng-template pTemplate="header">
+        <h2>{{ festival.nombre }}</h2>
+      </ng-template>
+      <div class="festival-details">
+        <div class="detail">
+          <h3 class="element-title">Fecha:</h3>
+          <div class="extra-details">{{ festival.fecha }}</div>
+        </div>
+        <div class="detail">
+          <h3 class="element-title">Ubicación:</h3>
+          <div class="extra-details">{{ festival.lugar }}</div>
+        </div>
+      </div>
+      <h3 class="artist-title center-title">Artistas:</h3>
+      <div class="p-artistas">
+        <ul>
+          <li *ngFor="let artista of festival.artistas">{{ artista.nombre }}</li>
+        </ul>
+      </div>
+      <footer>
+        <div class="row">
+          <p-button
+            *ngIf="selectedFestival !== festival"
+            class="p-button-form"
+            label="Ver más"
+            icon="pi pi-arrow-right"
+            (click)="selectFestival(festival)"
+          ></p-button>
+          <p-button
+            *ngIf="selectedFestival === festival"
+            label="Volver"
+            icon="pi pi-arrow-left"
+            (click)="goBack()"
+          ></p-button>
+          <p-button
+            class="p-button-form"
+            label="Editar Festival"
+            icon="pi pi-pencil"
+            (click)="editFestival(festival)"
+          ></p-button>
+        </div>
+        <p-button
+          class="p-button-delete"
+          label="Eliminar Festival"
+          severity="danger"
+          icon="pi pi-trash"
+          (click)="deleteFestival(festival)"
+        ></p-button>
+      </footer>
+    </p-card>
+  </div>
+</div>
+
+<!-- Formulario para agregar un festival, centrado en la pantalla -->
+<div *ngIf="isFormVisible" class="form-overlay">
+  <p-card [style]="{ width: '600px' }" class="card-styled">
+    <form (ngSubmit)="onSubmit()" class="festival-form">
+      <ng-template pTemplate="header">
+        <h2 class="form-title">{{ isEditing ? 'Editar Festival' : 'Crear Nuevo Festival' }}</h2>
+      </ng-template>
+
+
+      <div class="p-field">
+        <label for="nombre">Nombre:</label>
+        <input class="margin-box input-styled" id="nombre" type="text" pInputText [(ngModel)]="newFestival.nombre"
+               name="nombre" required/>
+      </div>
+
+      <div class="p-field">
+        <label for="fecha">Fecha:</label>
+        <input class="margin-box input-styled" id="fecha" type="date" pInputText [(ngModel)]="newFestival.fecha"
+               name="fecha" required/>
+      </div>
+
+      <div class="p-field">
+        <label for="lugar">Ubicación:</label>
+        <input class="margin-box input-styled" id="lugar" type="text" pInputText [(ngModel)]="newFestival.lugar"
+               name="lugar" required/>
+      </div>
+
+      <!-- Lista de artistas -->
+      <div class="p-field form-style">
+        <div *ngFor="let artista of newFestival.artistas; let i = index" class="p-d-flex p-jc-between artist-row">
+          <input type="text" class="input-styled" pInputText [(ngModel)]="artista.nombre"
+                 (ngModelChange)="newFestival.artistas[i].id = generatedId()"
+                 placeholder="Nombre del artista" name="artistNombre-{{i}}" required/>
+        </div>
+
+        <div class="p-d-flex p-jc-center">
+          <p-button class="p-button-form add-artist-button" type="button" label="Añadir Artista" icon="pi pi-plus"
+                    (click)="addArtist()"></p-button>
+        </div>
+      </div>
+
+      <div class="p-d-flex button-row">
+        <p-button class="p-button-form" type="submit"
+                  label="{{ isEditing ? 'Guardar Cambios' : 'Crear Festival' }}"></p-button>
+        <p-button class="p-button-form p-cancelar" type="button" label="Volver atrás" icon="pi pi-times"
+                  (click)="cancelForm()"></p-button>
+      </div>
+
+
+    </form>
+  </p-card>
+</div>
