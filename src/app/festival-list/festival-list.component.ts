@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {Button} from "primeng/button";
-import {CardModule} from "primeng/card";
-import {NgForOf, NgIf} from "@angular/common";
-import {PrimeTemplate} from "primeng/api";
-import {Festival} from "../festival";
-import {FestivalService} from "../festival.service";
-import {FormsModule} from "@angular/forms";
-import {MenubarModule} from "primeng/menubar";
-import {Router} from "@angular/router";
-import {ArtistService} from "../artist.service";
-import {Artista} from "../artista";
+import { Component, OnInit } from '@angular/core';
+import { Button } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { NgForOf, NgIf } from "@angular/common";
+import { PrimeTemplate } from "primeng/api";
+import { Festival } from "../festival";
+import { FestivalService } from "../festival.service";
+import { FormsModule } from "@angular/forms";
+import { MenubarModule } from "primeng/menubar";
+import { Router } from "@angular/router";
+import { ArtistService } from "../artist.service";
+import { Artista } from "../artista";
 
 @Component({
   selector: 'app-festival-list',
@@ -24,7 +24,7 @@ import {Artista} from "../artista";
     MenubarModule
   ],
   templateUrl: './festival-list.component.html',
-  styleUrl: './festival-list.component.css'
+  styleUrls: ['./festival-list.component.css'] // Corrected this to 'styleUrls'
 })
 export class FestivalListComponent implements OnInit {
   public festivals: Festival[] = [];
@@ -32,22 +32,18 @@ export class FestivalListComponent implements OnInit {
   public isFormVisible: boolean = false;
   public isEditing: boolean = false;
   public newFestival: Festival = {
-    id: this.generatedId(), nombre: '', lugar: '', fecha: '', artistas: [{
-      id: this.generatedId(),
-      nombre: '',
-      albums: [],
-      canciones: [],
-      genero: '',
-      pais: ''
-    }
-    ]
+    id: this.generatedId(),
+    nombre: '',
+    lugar: '',
+    fecha: '',
+    artistas: []
   };
 
-
-  constructor(private festivalService: FestivalService,
-              private artistService: ArtistService,
-              private router: Router) {
-  }
+  constructor(
+    private festivalService: FestivalService,
+    private artistService: ArtistService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getFestivals();
@@ -78,12 +74,11 @@ export class FestivalListComponent implements OnInit {
   public showForm(): void {
     this.isFormVisible = true;
     this.isEditing = false;
-    this.selectedFestival = null;
+    this.newFestival = { id: this.generatedId(), nombre: '', lugar: '', fecha: '', artistas: [] }; // Reset newFestival
   }
 
   public cancelForm(): void {
     this.isFormVisible = false;
-    this.newFestival = {'id': '', 'nombre': '', 'lugar': '', 'fecha': '', 'artistas': []};
   }
 
   public onSubmit(): void {
@@ -95,18 +90,6 @@ export class FestivalListComponent implements OnInit {
             this.festivals[index] = response; // Update the festival in the list
           }
           this.isFormVisible = false;
-          // Guardar cada artista en la base de datos
-          this.newFestival.artistas.forEach(artist => {
-            this.artistService.addArtist(artist).subscribe({
-              next: () => {
-                console.log('Artista agregado correctamente');
-              },
-              error: (error: any) => {
-                console.error('Error al agregar artista:', error);
-              }
-            });
-          });
-          this.newFestival = {id: this.newFestival.id, nombre: '', lugar: '', fecha: '', artistas: []};
         },
         error: (error: any) => {
           console.error('Error al guardar los cambios:', error);
@@ -117,10 +100,12 @@ export class FestivalListComponent implements OnInit {
         next: (response: Festival) => {
           this.festivals.push(response);
           this.isFormVisible = false;
+
+          // Add artists to the festival
           this.newFestival.artistas.forEach(artist => {
-            this.artistService.addArtist(artist).subscribe({
+            this.artistService.addArtistToFestival(response.id, artist).subscribe({
               next: () => {
-                console.log('Artista agregado correctamente');
+                console.log('Artista agregado correctamente al festival');
               },
               error: (error: any) => {
                 console.error('Error al agregar artista:', error);
@@ -128,7 +113,7 @@ export class FestivalListComponent implements OnInit {
             });
           });
 
-          this.newFestival = {id: this.generatedId(), nombre: '', lugar: '', fecha: '', artistas: []};
+          this.newFestival = { id: this.generatedId(), nombre: '', lugar: '', fecha: '', artistas: [] };
         },
         error: (error: any) => {
           console.error(error);
@@ -137,43 +122,25 @@ export class FestivalListComponent implements OnInit {
     }
   }
 
-  addArtist() {
-    const lastArtistIndex = this.newFestival.artistas.length - 1;
-    const artistNombre = this.newFestival.artistas[lastArtistIndex].nombre;
-
-    this.newFestival.artistas.push({
-      id: '', // Inicialmente vacío, se llenará con el ID del input
+  public addArtist(): void {
+    const newArtist: Artista = {
+      id: this.generatedId(),
       nombre: '',
       albums: [],
       canciones: [],
       genero: '',
       pais: ''
-    });
+    };
 
-    // Enviar el artista al backend
-    this.artistService.addArtistToFestival(this.newFestival.id, {
-      id: this.generatedId(),
-      nombre: artistNombre,
-      albums: [],
-      canciones: [],
-      genero: '',
-      pais: ''
-    }).subscribe({
-      next: (response: any) => {
-        console.log('Artista agregado correctamente al festival');
-      },
-      error: (error: any) => {
-        console.error('Error al agregar artista:', error);
-      }
-    });
+    this.newFestival.artistas.push(newArtist);
+    console.log('Artista añadido:', newArtist);
   }
 
   public editFestival(festival: Festival): void {
     this.isFormVisible = true;
     this.isEditing = true;
-    this.newFestival = { ...festival }; // Copy the festival details to newFestival
+    this.newFestival = { ...festival };
   }
-
 
   logout() {
     localStorage.removeItem('authToken');
@@ -181,6 +148,6 @@ export class FestivalListComponent implements OnInit {
   }
 
   protected generatedId(): string {
-    return Date.now().toString(); // Devuelve el timestamp actual como un string
+    return Date.now().toString();
   }
 }
