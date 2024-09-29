@@ -36,7 +36,9 @@ export class FestivalService {
 
 
   public deleteFestival(festivalId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiServerUrl}/${festivalId}`);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<void>(`${this.apiServerUrl}/${festivalId}`, { headers });
   }
 
 }

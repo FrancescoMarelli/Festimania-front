@@ -35,24 +35,33 @@
         </ul>
       </div>
       <footer>
+        <div class="row">
+          <p-button
+            *ngIf="selectedFestival !== festival"
+            class="p-button-form"
+            label="Ver más"
+            icon="pi pi-arrow-right"
+            (click)="selectFestival(festival)"
+          ></p-button>
+          <p-button
+            *ngIf="selectedFestival === festival"
+            label="Volver"
+            icon="pi pi-arrow-left"
+            (click)="goBack()"
+          ></p-button>
+          <p-button
+            class="p-button-form"
+            label="Editar Festival"
+            icon="pi pi-pencil"
+            (click)="editFestival(festival)"
+          ></p-button>
+        </div>
         <p-button
-          *ngIf="selectedFestival !== festival"
-          class="p-button-form"
-          label="Ver más"
-          icon="pi pi-arrow-right"
-          (click)="selectFestival(festival)"
-        ></p-button>
-        <p-button
-          *ngIf="selectedFestival === festival"
-          label="Volver"
-          icon="pi pi-arrow-left"
-          (click)="goBack()"
-        ></p-button>
-        <p-button
-          class="p-button-form"
-          label="Editar Festival"
-          icon="pi pi-pencil"
-          (click)="editFestival(festival)"
+          class="p-button-delete"
+          label="Eliminar Festival"
+          severity="danger"
+          icon="pi pi-trash"
+          (click)="deleteFestival(festival)"
         ></p-button>
       </footer>
     </p-card>

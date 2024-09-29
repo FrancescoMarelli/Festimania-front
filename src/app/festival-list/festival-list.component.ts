@@ -150,4 +150,18 @@ export class FestivalListComponent implements OnInit {
   protected generatedId(): string {
     return Date.now().toString();
   }
+  public deleteFestival(festival: Festival): void {
+    if (confirm(`¿Estás seguro de que quieres eliminar el festival "${festival.nombre}"?`)) {
+      this.festivalService.deleteFestival(festival.id).subscribe({
+        next: () => {
+          this.festivals = this.festivals.filter(f => f.id !== festival.id);
+          console.log(`Festival "${festival.nombre}" eliminado correctamente.`);
+        },
+        error: (error: any) => {
+          console.error('Error al eliminar el festival:', error);
+        }
+      });
+    }
+  }
+
 }

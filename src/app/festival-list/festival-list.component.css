@@ -95,6 +95,7 @@
 .p-d-flex.p-jc-center {
   justify-content: center;
   margin-top: 10px;
+
 }
 
 /* Botones "Crear Festival" y "Cerrar" en dos columnas centradas */
@@ -111,5 +112,16 @@
   width: 50%;
   text-align: center;
 }
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.p-button-form {
+  margin-right: 10px; /* Ajusta el margen derecho de los botones de la fila */
+}
+
 
 
