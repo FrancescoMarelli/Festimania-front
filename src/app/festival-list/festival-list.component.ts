@@ -30,18 +30,24 @@ export class FestivalListComponent implements OnInit {
   public festivals: Festival[] = [];
   public selectedFestival: Festival | null = null;
   public isFormVisible: boolean = false;
-  public newFestival: Festival = { id: '', nombre: '', lugar: '', fecha: '', artistas: [    {
-      id: '',
+  public isEditing: boolean = false;
+  public newFestival: Festival = {
+    id: this.generatedId(), nombre: '', lugar: '', fecha: '', artistas: [{
+      id: this.generatedId(),
       nombre: '',
       albums: [],
       canciones: [],
       genero: '',
       pais: ''
     }
-    ] };
+    ]
+  };
 
 
-  constructor(private festivalService: FestivalService, private artistService: ArtistService, private router: Router) { }
+  constructor(private festivalService: FestivalService,
+              private artistService: ArtistService,
+              private router: Router) {
+  }
 
   ngOnInit() {
     this.getFestivals();
@@ -63,7 +69,6 @@ export class FestivalListComponent implements OnInit {
 
   public selectFestival(festival: Festival): void {
     this.selectedFestival = festival;
-    const festivalCard = document.querySelector('.expanded');
   }
 
   public goBack(): void {
@@ -72,42 +77,70 @@ export class FestivalListComponent implements OnInit {
 
   public showForm(): void {
     this.isFormVisible = true;
+    this.isEditing = false;
     this.selectedFestival = null;
   }
 
   public cancelForm(): void {
     this.isFormVisible = false;
-    this.newFestival = { 'id': '', 'nombre': '', 'lugar': '', 'fecha': '', 'artistas': [] };
+    this.newFestival = {'id': '', 'nombre': '', 'lugar': '', 'fecha': '', 'artistas': []};
   }
 
   public onSubmit(): void {
-    this.festivalService.addFestival((this.newFestival)).subscribe({
-      next: (response: Festival) => {
-        this.festivals.push(response);
-      },
-      error: (error: any) => {
-        console.error(error);
-      },
-      complete: () => {
-        console.log('Festival data successfully added');
-      }
-    });
+    if (this.isEditing) {
+      this.festivalService.updateFestival(this.newFestival).subscribe({
+        next: (response: Festival) => {
+          const index = this.festivals.findIndex(f => f.id === response.id);
+          if (index !== -1) {
+            this.festivals[index] = response; // Update the festival in the list
+          }
+          this.isFormVisible = false;
+          // Guardar cada artista en la base de datos
+          this.newFestival.artistas.forEach(artist => {
+            this.artistService.addArtist(artist).subscribe({
+              next: () => {
+                console.log('Artista agregado correctamente');
+              },
+              error: (error: any) => {
+                console.error('Error al agregar artista:', error);
+              }
+            });
+          });
+          this.newFestival = {id: this.newFestival.id, nombre: '', lugar: '', fecha: '', artistas: []};
+        },
+        error: (error: any) => {
+          console.error('Error al guardar los cambios:', error);
+        }
+      });
+    } else {
+      this.festivalService.addFestival(this.newFestival).subscribe({
+        next: (response: Festival) => {
+          this.festivals.push(response);
+          this.isFormVisible = false;
+          this.newFestival.artistas.forEach(artist => {
+            this.artistService.addArtist(artist).subscribe({
+              next: () => {
+                console.log('Artista agregado correctamente');
+              },
+              error: (error: any) => {
+                console.error('Error al agregar artista:', error);
+              }
+            });
+          });
+
+          this.newFestival = {id: this.generatedId(), nombre: '', lugar: '', fecha: '', artistas: []};
+        },
+        error: (error: any) => {
+          console.error(error);
+        }
+      });
     }
+  }
 
   addArtist() {
-    // Obtener el último artista de la lista
     const lastArtistIndex = this.newFestival.artistas.length - 1;
-
-    // Asegurarse de que el ID y el nombre del último artista no estén vacíos
-    const artistId = this.newFestival.artistas[lastArtistIndex].id;
     const artistNombre = this.newFestival.artistas[lastArtistIndex].nombre;
 
-    if (!artistId || !artistNombre) {
-      console.warn('Por favor, completa el ID y el Nombre del artista antes de agregar uno nuevo.');
-      return;
-    }
-
-    // Añadir un nuevo artista vacío a la lista
     this.newFestival.artistas.push({
       id: '', // Inicialmente vacío, se llenará con el ID del input
       nombre: '',
@@ -119,7 +152,7 @@ export class FestivalListComponent implements OnInit {
 
     // Enviar el artista al backend
     this.artistService.addArtistToFestival(this.newFestival.id, {
-      id: artistId,
+      id: this.generatedId(),
       nombre: artistNombre,
       albums: [],
       canciones: [],
@@ -135,14 +168,19 @@ export class FestivalListComponent implements OnInit {
     });
   }
 
-
-  removeArtist(index: number) {
-    this.newFestival.artistas.splice(index, 1);
+  public editFestival(festival: Festival): void {
+    this.isFormVisible = true;
+    this.isEditing = true;
+    this.newFestival = { ...festival }; // Copy the festival details to newFestival
   }
 
 
   logout() {
     localStorage.removeItem('authToken');
     this.router.navigate(['/login']);
+  }
+
+  protected generatedId(): string {
+    return Date.now().toString(); // Devuelve el timestamp actual como un string
   }
 }

@@ -37,6 +37,7 @@
       <footer>
         <p-button
           *ngIf="selectedFestival !== festival"
+          class="p-button-form"
           label="Ver más"
           icon="pi pi-arrow-right"
           (click)="selectFestival(festival)"
@@ -46,6 +47,12 @@
           label="Volver"
           icon="pi pi-arrow-left"
           (click)="goBack()"
+        ></p-button>
+        <p-button
+          class="p-button-form"
+          label="Editar Festival"
+          icon="pi pi-pencil"
+          (click)="editFestival(festival)"
         ></p-button>
       </footer>
     </p-card>
@@ -57,43 +64,47 @@
   <p-card [style]="{ width: '600px' }" class="card-styled">
     <form (ngSubmit)="onSubmit()" class="festival-form">
       <ng-template pTemplate="header">
-        <h2 class="form-title">Crear Nuevo Festival</h2>
+        <h2 class="form-title">{{ isEditing ? 'Editar Festival' : 'Crear Nuevo Festival' }}</h2>
       </ng-template>
 
-      <div class="p-field">
-        <label for="id">ID:</label>
-        <input class="margin-box input-styled" id="id" type="text" pInputText [(ngModel)]="newFestival.id" name="id" required />
-      </div>
 
       <div class="p-field">
         <label for="nombre">Nombre:</label>
-        <input class="margin-box input-styled" id="nombre" type="text" pInputText [(ngModel)]="newFestival.nombre" name="nombre" required />
+        <input class="margin-box input-styled" id="nombre" type="text" pInputText [(ngModel)]="newFestival.nombre"
+               name="nombre" required/>
       </div>
 
       <div class="p-field">
         <label for="fecha">Fecha:</label>
-        <input class="margin-box input-styled" id="fecha" type="date" pInputText [(ngModel)]="newFestival.fecha" name="fecha" required />
+        <input class="margin-box input-styled" id="fecha" type="date" pInputText [(ngModel)]="newFestival.fecha"
+               name="fecha" required/>
       </div>
 
       <div class="p-field">
         <label for="lugar">Ubicación:</label>
-        <input class="margin-box input-styled" id="lugar" type="text" pInputText [(ngModel)]="newFestival.lugar" name="lugar" required />
+        <input class="margin-box input-styled" id="lugar" type="text" pInputText [(ngModel)]="newFestival.lugar"
+               name="lugar" required/>
       </div>
 
       <!-- Lista de artistas -->
       <div class="p-field form-style">
         <div *ngFor="let artista of newFestival.artistas; let i = index" class="p-d-flex p-jc-between artist-row">
-          <input type="text" class="input-styled" pInputText [(ngModel)]="newFestival.artistas[i].id" placeholder="ID del artista" name="artistId-{{i}}" required />
-          <input type="text" class="input-styled" pInputText [(ngModel)]="newFestival.artistas[i].nombre" placeholder="Nombre del artista" name="artistNombre-{{i}}" required />
+          <input type="text" class="input-styled" pInputText [(ngModel)]="artista.nombre"
+                 (ngModelChange)="newFestival.artistas[i].id = generatedId()"
+                 placeholder="Nombre del artista" name="artistNombre-{{i}}" required/>
         </div>
+
         <div class="p-d-flex p-jc-center">
-          <p-button class="p-button-form add-artist-button" type="button" label="Añadir Artista" icon="pi pi-plus" (click)="addArtist()"></p-button>
+          <p-button class="p-button-form add-artist-button" type="button" label="Añadir Artista" icon="pi pi-plus"
+                    (click)="addArtist()"></p-button>
         </div>
       </div>
 
       <div class="p-d-flex button-row">
-        <p-button class="p-button-form" type="submit" label="Crear Festival"></p-button>
-        <p-button class="p-button-form p-cancelar" type="button" label="Volver atrás" icon="pi pi-times" (click)="cancelForm()"></p-button>
+        <p-button class="p-button-form" type="submit"
+                  label="{{ isEditing ? 'Guardar Cambios' : 'Crear Festival' }}"></p-button>
+        <p-button class="p-button-form p-cancelar" type="button" label="Volver atrás" icon="pi pi-times"
+                  (click)="cancelForm()"></p-button>
       </div>
 
 
